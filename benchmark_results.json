@@ -1,0 +1,52 @@
+{
+  "config": {
+    "batch_size": 4,
+    "seq_len": 512,
+    "embed_dim": 512,
+    "num_heads": 8,
+    "device": "cuda",
+    "no_cudnn": false,
+    "output": "benchmark_results.json"
+  },
+  "results": {
+    "pytorch_mha": {
+      "mean_time": 0.00044294880032539366,
+      "std_time": 0.00010664420443646853,
+      "min_time": 0.00032051199674606323,
+      "max_time": 0.0007137280106544495,
+      "memory_usage": 51515392
+    },
+    "sdpa_cudnn": {
+      "mean_time": 9.616800025105477e-05,
+      "std_time": 1.9974210120064444e-06,
+      "min_time": 9.404800087213516e-05,
+      "max_time": 0.00010127999633550644,
+      "memory_usage": 17956864,
+      "backend": "cuDNN"
+    },
+    "custom_fmha": {
+      "mean_time": 0.00020721119940280913,
+      "std_time": 5.6334703426280975e-05,
+      "min_time": 0.0001894399970769882,
+      "max_time": 0.00045232000946998597,
+      "memory_usage": 17956864
+    },
+    "triton_fmha": {
+      "mean_time": 8.219999931752682e-05,
+      "std_time": 6.994970692017405e-05,
+      "min_time": 6.534399837255478e-05,
+      "max_time": 0.00038707199692726135,
+      "memory_usage": 17956864
+    }
+  },
+  "validation": {
+    "custom_fmha": {
+      "diff": 0.3828125,
+      "max_diff": 4.02734375
+    },
+    "triton_fmha": {
+      "diff": 0.1021728515625,
+      "max_diff": 2.802734375
+    }
+  }
+}

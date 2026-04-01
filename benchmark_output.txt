@@ -1,0 +1,59 @@
+Warning: flash-attn not available. Install with: pip install flash-attn
+Device: cuda
+Configuration: batch_size=4, seq_len=512, embed_dim=512, num_heads=8
+GPU: NVIDIA GeForce RTX 4070
+cuDNN Available: True
+FlashAttention-2 Available: False
+----------------------------------------------------------------------------------------------------
+Validating implementations...
+
+====================================================================================================
+VALIDATION RESULTS (vs scaled_dot_product_attention)
+====================================================================================================
+custom_fmha               Mean Diff: 0.382568, Max Diff: 3.158203 ✗ FAIL (expected for different implementations)
+triton_fmha               Mean Diff: 0.102173, Max Diff: 3.101562 ✗ FAIL (expected for different implementations)
+====================================================================================================
+
+Running benchmarks...
+  - PyTorch MultiheadAttention...
+  - PyTorch scaled_dot_product_attention (cuDNN)...
+  - Custom FMHA...
+  - Triton FMHA...
+
+====================================================================================================
+BENCHMARK RESULTS
+====================================================================================================
+Implementation            Mean (ms)    Std (ms)     Min (ms)     Max (ms)     Memory (MB)     Speedup   
+----------------------------------------------------------------------------------------------------
+pytorch_mha               0.368        0.049        0.337        0.570        51.13           0.28      x
+sdpa_cudnn                0.102        0.002        0.099        0.109        19.12           1.00      x
+custom_fmha               0.210        0.011        0.198        0.247        19.12           0.49      x
+triton_fmha               0.069        0.004        0.052        0.072        19.12           1.49      x
+====================================================================================================
+
+====================================================================================================
+SUMMARY
+====================================================================================================
+PyTorch MHA vs cuDNN SDPA: 3.59x (slower)
+Custom FMHA vs cuDNN SDPA: 0.49x
+Triton FMHA vs cuDNN SDPA: 1.49x
+====================================================================================================
+Traceback (most recent call last):
+  File "/home/zhangxa/codes/auto_coding/benchmark_cudnn_comparison.py", line 479, in <module>
+    main()
+  File "/home/zhangxa/codes/auto_coding/benchmark_cudnn_comparison.py", line 470, in main
+    json.dump({
+  File "/usr/lib/python3.12/json/__init__.py", line 179, in dump
+    for chunk in iterable:
+  File "/usr/lib/python3.12/json/encoder.py", line 432, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/usr/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/usr/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/usr/lib/python3.12/json/encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Tensor is not JSON serializable
